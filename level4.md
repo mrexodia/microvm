@@ -89,8 +89,6 @@ Set up cell 0 = 8:
 INC x8     tape: [8] [0]     dp=0
 
 --- loop start (pc = 8) ---
-JUMP_IF_ZERO to pc 24 (exit)
-    tape[0] is 8, not zero, so keep going.
 RIGHT      tape: [8] [0]     dp=1
 INC x9     tape: [8] [9]     dp=1     <- added 9 to cell 1
 LEFT       tape: [8] [9]     dp=0     <- back to counter
@@ -103,7 +101,7 @@ After 8 iterations:
            tape: [0] [72]    dp=0
 
 JUMP_IF_NOT_ZERO sees that tape[0] is 0, so it does not jump.
-Execution continues at pc 24.
+Execution continues at pc 22.
 RIGHT      dp=1
 PRINT      prints tape[1] = 72 = 'H'
 HALT
@@ -115,19 +113,18 @@ Write this as a bytecode array. The hardest part is getting the `pc` values righ
 
 ```c
 uint8_t program[] = {
-//  pc
-    1,1,1,1,1,1,1,1,          //  0-7:   INC x8 (cell 0 = 8)
+    // -- pc starts at 0 --
+    1,1,1,1,1,1,1,1,           // 0-7:  INC x8 (cell 0 = 8)
     // -- loop start at pc 8 --
-    7, ???,                    //  8:     JUMP_IF_ZERO ???  (exit loop)
-    3,                         // 10:     RIGHT
-    1,1,1,1,1,1,1,1,1,        // 11-19:  INC x9 (add 9 to cell 1)
-    4,                         // 20:     LEFT
-    2,                         // 21:     DEC (counter -= 1)
-    8, ???,                    // 22:     JUMP_IF_NOT_ZERO ??? (loop back)
+    3,                         // 8:    RIGHT
+    1,1,1,1,1,1,1,1,1,         // 9-17: INC x9 (add 9 to cell 1)
+    4,                         // 18:   LEFT
+    2,                         // 19:   DEC (counter -= 1)
+    8, ???,                    // 20:   JUMP_IF_NOT_ZERO ??? (loop back)
     // -- loop end --
-    3,                         // 24:     RIGHT
-    5,                         // 25:     PRINT
-    0                          // 26:     HALT
+    3,                         // 22:   RIGHT
+    5,                         // 23:   PRINT
+    0                          // 24:   HALT
 };
 ```
 
