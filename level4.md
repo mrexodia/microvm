@@ -25,7 +25,7 @@ You're going to **replace the stack** with this. Remove `PUSH`, `ADD`, `PRINT_TO
 Your VM state is now:
 
 ```c
-uint8_t tape[256];   // all zeroes at start
+uint8_t tape[256] = {0};   // all zeroes at start
 int dp = 0;                // data pointer
 int pc = 0;                // program counter
 ```
@@ -107,7 +107,7 @@ PRINT      prints tape[1] = 72 = 'H'
 HALT
 ```
 
-Write this as a bytecode array. The hardest part is getting the `pc` values right for the two jumps. Count every byte carefully — most instructions are 1 byte, but each jump is 2 bytes: opcode + target.
+Write this as a bytecode array. The hardest part is getting the `pc` value right for the jump. Count every byte carefully — most instructions are 1 byte, but the jump is 2 bytes: opcode + target.
 
 **Hint**
 
@@ -128,6 +128,6 @@ uint8_t program[] = {
 };
 ```
 
-Fill in the two `???`. One points forward to after the loop, one points backward to the top of the loop.
+Fill in the `???`. It points backward to the top of the loop.
 
 If you accidentally initialize cell 1 to `9` before the loop and then add `9` eight more times, you will get `81`, which prints `'Q'`, not `'H'`.

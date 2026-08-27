@@ -17,7 +17,7 @@ The mapping is:
 
 All other characters are ignored (they're comments).
 
-There's one problem: in your level 4 bytecode, `JUMP_IF_ZERO 24` says exactly where to jump. In brainfuck source code, `[` doesn't say where `]` is — you have to **find the matching bracket**.
+There's one problem: in your level 4 bytecode, each jump instruction includes an exact numeric target. In brainfuck source code, `[` doesn't say where `]` is — you have to **find the matching bracket**.
 
 You need to solve the bracket matching problem. Here's the approach:
 
@@ -32,6 +32,9 @@ int opens[MAX_DEPTH];        // a stack! you know how these work now
 
 for i = 0 to length-1:
     if program[i] == '[':
+        if depth == MAX_DEPTH:
+            error("bracket nesting too deep")
+
         opens[depth] = i
         depth += 1
 
